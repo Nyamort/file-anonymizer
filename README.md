@@ -8,13 +8,35 @@ A PHP tool to export and anonymize files based on YAML-configurable rules.
 - Files not matching any anonymization rule are simply copied.
 
 ## Usage with GitHub Container Registry (ghcr.io)
-You can use the pre-built image from GitHub Packages:
+You can use the pre-built image from GitHub Packages.
 
-```bash
-docker run --rm -v $(pwd):/app ghcr.io/nyamort/file-anonymizer:latest config.yaml output/
+**Important:** Do not mount your entire project directory to `/app` as it will overwrite the application code inside the container. Instead, only mount the necessary files and folders (config, input, output).
+
+### Example
+Suppose you have the following structure:
 ```
-- Replace `config.yaml` with your config file path (relative to your current directory)
-- Replace `output/` with your desired output directory (relative to your current directory)
+/tmp/
+  config.yaml
+  input/
+  output/   # (can be empty, will be filled by the tool)
+```
+Run:
+```bash
+docker run --rm \
+  -v $(pwd)/config.yaml:/app/config.yaml \
+  -v $(pwd)/input:/app/input \
+  -v $(pwd)/output:/app/output \
+  ghcr.io/<your-github-username>/fileanonymizer:latest config.yaml output/
+```
+- Replace `<your-github-username>` with your actual GitHub username or organization.
+- `config.yaml` is your configuration file.
+- `input/` is your input folder (as referenced in your config).
+- `output/` is your output folder (will be created if it doesn't exist).
+
+If the image is private, you may need to authenticate:
+```bash
+docker login ghcr.io
+```
 
 ## Manual Installation
 1. Clone the repository or copy the files into a folder.
@@ -34,7 +56,7 @@ php src/anonymizer.php <config.yaml> <output_dir>
 ### Example configuration (`config.yaml`)
 ```yaml
 directories:
-  - "data/input/"
+  - "input/"
 anonymize:
   - files: "**/*.png"
     replacement: "Anonymized PNG"
@@ -51,13 +73,17 @@ anonymize:
   - `replacement`: text to replace the file content
 
 ## Example
-To anonymize all `.csv` and `.png` files in `data/input/` and export to `data/output/`:
+To anonymize all `.csv` and `.png` files in `input/` and export to `output/`:
 ```bash
-docker run --rm -v $(pwd):/app ghcr.io/nyamort/file-anonymizer:latest config.yaml data/output/
+docker run --rm \
+  -v $(pwd)/config.yaml:/app/config.yaml \
+  -v $(pwd)/input:/app/input \
+  -v $(pwd)/output:/app/output \
+  ghcr.io/<your-github-username>/fileanonymizer:latest config.yaml output/
 ```
 Or without Docker:
 ```bash
-php src/anonymizer.php config.yaml data/output/
+php src/anonymizer.php config.yaml output/
 ```
 
 ## Dependencies
