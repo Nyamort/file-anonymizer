@@ -26,9 +26,8 @@ docker run --rm \
   -v $(pwd)/config.yaml:/app/config.yaml \
   -v $(pwd)/input:/app/input \
   -v $(pwd)/output:/app/output \
-  ghcr.io/<your-github-username>/fileanonymizer:latest config.yaml output/
+  ghcr.io/nyamort/file-anonymizer:latest config.yaml output/
 ```
-- Replace `<your-github-username>` with your actual GitHub username or organization.
 - `config.yaml` is your configuration file.
 - `input/` is your input folder (as referenced in your config).
 - `output/` is your output folder (will be created if it doesn't exist).
@@ -79,7 +78,7 @@ docker run --rm \
   -v $(pwd)/config.yaml:/app/config.yaml \
   -v $(pwd)/input:/app/input \
   -v $(pwd)/output:/app/output \
-  ghcr.io/<your-github-username>/fileanonymizer:latest config.yaml output/
+  ghcr.io/nyamort/file-anonymizer:latest config.yaml output/
 ```
 Or without Docker:
 ```bash
