@@ -32,11 +32,6 @@ docker run --rm \
 - `input/` is your input folder (as referenced in your config).
 - `output/` is your output folder (will be created if it doesn't exist).
 
-If the image is private, you may need to authenticate:
-```bash
-docker login ghcr.io
-```
-
 ## Manual Installation
 1. Clone the repository or copy the files into a folder.
 2. Install PHP dependencies:
